@@ -22,7 +22,18 @@ body, html {
     text-align: center;
 }
 
-a-scene {
-    display: none; /* Hide the AR scene initially */
+#prompt-message {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    display: none;
 }
-    
+
+canvas {
+    display: block;
+}
