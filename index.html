@@ -3,42 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic WebXR Camera Test</title>
+    <title>3D Model Viewer with AR</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r99/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <button id="start-ar">Start AR</button>
-    <script>
-        if ('xr' in navigator) {
-            document.getElementById('start-ar').addEventListener('click', async () => {
-                try {
-                    const session = await navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor'] });
-                    console.log('AR session started');
-                    
-                    // Do basic setup
-                    const renderer = new THREE.WebGLRenderer({ alpha: true });
-                    document.body.appendChild(renderer.domElement);
-
-                    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
-                    const scene = new THREE.Scene();
-
-                    session.updateRenderState({ baseLayer: new XRWebGLLayer(session, renderer.getContext()) });
-
-                    renderer.xr.enabled = true;
-                    renderer.xr.setReferenceSpaceType('local-floor');
-                    renderer.xr.setSession(session);
-
-                    renderer.setAnimationLoop(() => {
-                        renderer.render(scene, camera);
-                    });
-
-                } catch (err) {
-                    console.error('Failed to start AR session:', err);
-                }
-            });
-        } else {
-            alert('WebXR not supported on this browser or device');
-        }
-    </script>
+    <div id="model-container"></div>
+    <button id="ar-button">View in AR</button>
 </body>
 </html>
