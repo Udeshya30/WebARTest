@@ -38,7 +38,10 @@ function animate() {
 }
 
 document.getElementById('ar-button').addEventListener('click', () => {
-    document.querySelector('a-scene').style.display = 'block'; // Show the AR scene
+    // Hide the Three.js viewer and show the AR scene
+    document.getElementById('model-container').style.display = 'none';
+    document.getElementById('ar-button').style.display = 'none';
+    document.getElementById('ar-scene').style.display = 'block';
 });
 
 init();
