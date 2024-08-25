@@ -12,10 +12,12 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
+    <!-- 3D Model Viewer -->
     <div id="model-container"></div>
     <button id="ar-button">View in AR</button>
 
-    <a-scene embedded arjs>
+    <!-- AR Scene -->
+    <a-scene embedded arjs id="ar-scene" style="display: none;">
         <a-marker preset="hiro">
             <a-entity id="ar-model" gltf-model="url(models/earth.glb)" scale="0.5 0.5 0.5"></a-entity>
         </a-marker>
