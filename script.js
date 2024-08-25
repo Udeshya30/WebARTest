@@ -22,6 +22,9 @@ function init() {
         model = gltf.scene;
         scene.add(model);
         model.position.set(0, 0, -2);
+        console.log("Model loaded successfully.");
+    }, undefined, (error) => {
+        console.error('An error occurred while loading the model:', error);
     });
     
     // Add lights
@@ -44,9 +47,15 @@ function init() {
 }
 
 function startAR() {
-    navigator.xr.requestSession('immersive-ar', {
-        requiredFeatures: ['hit-test']
-    }).then(onSessionStarted);
+    if (navigator.xr) {
+        navigator.xr.requestSession('immersive-ar', {
+            requiredFeatures: ['hit-test']
+        }).then(onSessionStarted).catch(err => {
+            console.error("Failed to start AR session:", err);
+        });
+    } else {
+        alert('WebXR not supported on this device or browser');
+    }
 }
 
 function onSessionStarted(session) {
