@@ -3,15 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Model Viewer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Basic WebXR Camera Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/r99/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
-    <div id="model-container"></div>
-    <button id="ar-button">View in AR</button>
-    <div id="prompt-message">Scan the floor slowly to detect a flat surface</div>
-    <script src="script.js"></script>
+    <button id="start-ar">Start AR</button>
+    <script>
+        if ('xr' in navigator) {
+            document.getElementById('start-ar').addEventListener('click', async () => {
+                try {
+                    const session = await navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor'] });
+                    console.log('AR session started');
+                    
+                    // Do basic setup
+                    const renderer = new THREE.WebGLRenderer({ alpha: true });
+                    document.body.appendChild(renderer.domElement);
+
+                    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+                    const scene = new THREE.Scene();
+
+                    session.updateRenderState({ baseLayer: new XRWebGLLayer(session, renderer.getContext()) });
+
+                    renderer.xr.enabled = true;
+                    renderer.xr.setReferenceSpaceType('local-floor');
+                    renderer.xr.setSession(session);
+
+                    renderer.setAnimationLoop(() => {
+                        renderer.render(scene, camera);
+                    });
+
+                } catch (err) {
+                    console.error('Failed to start AR session:', err);
+                }
+            });
+        } else {
+            alert('WebXR not supported on this browser or device');
+        }
+    </script>
 </body>
 </html>
